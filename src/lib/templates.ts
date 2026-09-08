@@ -171,7 +171,7 @@ export const TEMPLATES: Template[] = [
   }),
   make("royal", "Royal Gold", "Luxury", {
     background: { type: "gradient", vignette: 0.6, pattern: true, anim: "zoom", blur: 0 },
-    colors: { bg: "#0a0803", bg2: "#3a2c0c", accent: "#e6c濃".replace("濃", "77"), progress: "#e6c777", wave: "#e6c777", glow: "#e6c777", border: "#e6c77744" },
+    colors: { bg: "#0a0803", bg2: "#3a2c0c", accent: "#e6c777", progress: "#e6c777", wave: "#e6c777", glow: "#e6c777", border: "#e6c77744" },
     cover: { shape: "circle", size: 0.6, y: 0.3, border: 6, glow: 0.5, anim: "rotate" },
     title: { size: 60, weight: 700, font: "Cairo", y: 0.58 },
     subtitle: { y: 0.63, size: 26, opacity: 0.6 },
