@@ -37,7 +37,7 @@ function SettingsPage() {
   useEffect(() => {
     (async () => {
       const s = await store.settings();
-      if (s) setDefs((d) => ({ ...d, ...s }));
+      if (s) setDefs((d) => ({ ...d, ...(s as Partial<typeof d>) }));
       setCounts({ projects: (await store.projects()).length, assets: (await store.assets()).length });
     })();
   }, []);
