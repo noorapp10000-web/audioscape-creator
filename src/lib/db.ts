@@ -58,8 +58,11 @@ export const store = {
   },
   favTemplates: () => get<string[]>("favTemplates", []),
   saveFavTemplates: (ids: string[]) => set("favTemplates", ids),
+  settings: () => get<Record<string, unknown> | null>("settings", null),
+  saveSettings: (s: Record<string, unknown>) => set("settings", s),
   palettes: () => get<{ name: string; colors: Record<string, string> }[]>("palettes", []),
   savePalettes: (p: { name: string; colors: Record<string, string> }[]) => set("palettes", p),
+
 };
 
 export const uid = () => Math.random().toString(36).slice(2, 10);
