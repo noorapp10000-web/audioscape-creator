@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AssetsRouteImport } from './routes/assets'
 import { Route as EditorRouteImport } from './routes/editor'
 import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as TemplatesRouteImport } from './routes/templates'
 
 const IndexRoute = IndexRouteImport.update({
@@ -35,6 +36,11 @@ const ProjectsRoute = ProjectsRouteImport.update({
   path: '/projects',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TemplatesRoute = TemplatesRouteImport.update({
   id: '/templates',
   path: '/templates',
@@ -46,6 +52,7 @@ export interface FileRoutesByFullPath {
   '/assets': typeof AssetsRoute
   '/editor': typeof EditorRoute
   '/projects': typeof ProjectsRoute
+  '/settings': typeof SettingsRoute
   '/templates': typeof TemplatesRoute
 }
 export interface FileRoutesByTo {
@@ -53,6 +60,7 @@ export interface FileRoutesByTo {
   '/assets': typeof AssetsRoute
   '/editor': typeof EditorRoute
   '/projects': typeof ProjectsRoute
+  '/settings': typeof SettingsRoute
   '/templates': typeof TemplatesRoute
 }
 export interface FileRoutesById {
@@ -61,14 +69,23 @@ export interface FileRoutesById {
   '/assets': typeof AssetsRoute
   '/editor': typeof EditorRoute
   '/projects': typeof ProjectsRoute
+  '/settings': typeof SettingsRoute
   '/templates': typeof TemplatesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/assets' | '/editor' | '/projects' | '/templates'
+  fullPaths:
+    '/' | '/assets' | '/editor' | '/projects' | '/settings' | '/templates'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/assets' | '/editor' | '/projects' | '/templates'
-  id: '__root__' | '/' | '/assets' | '/editor' | '/projects' | '/templates'
+  to: '/' | '/assets' | '/editor' | '/projects' | '/settings' | '/templates'
+  id:
+    | '__root__'
+    | '/'
+    | '/assets'
+    | '/editor'
+    | '/projects'
+    | '/settings'
+    | '/templates'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -76,6 +93,7 @@ export interface RootRouteChildren {
   AssetsRoute: typeof AssetsRoute
   EditorRoute: typeof EditorRoute
   ProjectsRoute: typeof ProjectsRoute
+  SettingsRoute: typeof SettingsRoute
   TemplatesRoute: typeof TemplatesRoute
 }
 
@@ -109,6 +127,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/templates': {
       id: '/templates'
       path: '/templates'
@@ -124,6 +149,7 @@ const rootRouteChildren: RootRouteChildren = {
   AssetsRoute: AssetsRoute,
   EditorRoute: EditorRoute,
   ProjectsRoute: ProjectsRoute,
+  SettingsRoute: SettingsRoute,
   TemplatesRoute: TemplatesRoute,
 }
 export const routeTree = rootRouteImport
