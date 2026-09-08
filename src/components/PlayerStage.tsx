@@ -1,67 +1,32 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { coverRect, drawFrame } from "@/lib/render";
 import { ASPECTS, type PlayerConfig, type Project } from "@/lib/types";
 
 export type LayerKey = "cover" | "logo" | "title" | "subtitle" | "reciter" | "verse" | "timeline" | "controls" | "waveform" | "card";
 
-export function useImage(url?: string) {
-  const ref = useRef<HTMLImageElement | null>(null);
-  const [, force] = useForce();
+export function useImage(url?: string): HTMLImageElement | null {
+  const [img, setImg] = useState<HTMLImageElement | null>(null);
   useEffect(() => {
     if (!url) {
-      ref.current = null;
-      force();
+      setImg(null);
       return;
     }
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.onload = () => {
-      ref.current = img;
-      force();
+    let alive = true;
+    const el = new Image();
+    el.crossOrigin = "anonymous";
+    el.onload = () => {
+      if (alive) setImg(el);
     };
-    img.src = url;
-  }, [url, force]);
-  return ref;
+    el.onerror = () => {
+      if (alive) setImg(null);
+    };
+    el.src = url;
+    return () => {
+      alive = false;
+    };
+  }, [url]);
+  return img;
 }
-
-function useForce() {
-  const ref = useRef(0);
-  const set = useRef<(n: number) => void>(() => {});
-  const [v, sv] = useReducerLike();
-  set.current = sv;
-  return [v, useCallback(() => set.current(++ref.current), [])] as const;
-}
-
-function useReducerLike() {
-  const ref = useRef<{ v: number; cb?: () => void }>({ v: 0 });
-  const rerender = useRerender();
-  return [
-    ref.current.v,
-    (n: number) => {
-      ref.current.v = n;
-      rerender();
-    },
-  ] as const;
-}
-
-function useRerender() {
-  const ref = useRef<() => void>(() => {});
-  const [, setTick] = useTick();
-  ref.current = setTick;
-  return useCallback(() => ref.current(), []);
-}
-
-function useTick() {
-  const s = useRefState();
-  return s;
-}
-
-function useRefState(): [number, () => void] {
-  const [n, setN] = useStateShim(0);
-  return [n, useCallback(() => setN((x) => x + 1), [setN])];
-}
-
-import { useState as useStateShim } from "react";
 
 interface Props {
   project: Project;
